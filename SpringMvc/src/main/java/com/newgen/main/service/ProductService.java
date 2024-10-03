@@ -4,7 +4,7 @@ package com.newgen.main.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.newgen.main.model.Product;
+import com.newgen.main.entites.Product;
 import com.newgen.main.repository.ProductRepository;
 
 import java.util.List;

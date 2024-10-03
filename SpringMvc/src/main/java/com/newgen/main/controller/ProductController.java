@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.newgen.main.model.Product;
+import com.newgen.main.entites.Product;
 import com.newgen.main.service.ProductService;
 
 import java.util.List;
@@ -18,30 +18,54 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    //listing all the products
     @GetMapping
     public String listProducts(Model model) {
+    	
+    	//Step 1: fetching data from database
         List<Product> products = productService.findAll();
+        
+        
+        
+        //Step 2: setting up our model - spring model
         model.addAttribute("products", products);
+        
+        //Step 3: return a view: list
         return "list";
     }
 
     @GetMapping("/new")
     public String showNewForm(Model model) {
+    	
+    	//this is new request . we are putting empty object in the model
         model.addAttribute("product", new Product());
+    
+        //this is view new.jsp
         return "new";
+    
     }
 
     @PostMapping
     public String saveProduct(@ModelAttribute("product") Product product) {
-        productService.save(product);
+        
+    	//Step 1: saving the data into database
+    	productService.save(product);
+        
+    	//Step 2: redirecting to another url
         return "redirect:/products";
     }
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable("id") Long id, Model model) {
-        Product product = productService.findById(id);
+        
+    	//Step 1: fetch the data from database by id
+    	Product product = productService.findById(id);
+        
+    	//Step 2: put the data into model
         model.addAttribute("product", product);
-        return "edit";
+        
+        //Step 3: returna view "edit"
+        return "edit123"; // WEB-INF/jsp/<edit123>.jsp
     }
 
     @PostMapping("/edit/{id}")

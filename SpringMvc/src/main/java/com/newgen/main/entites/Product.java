@@ -1,4 +1,4 @@
-package com.newgen.main.model;
+package com.newgen.main.entites;
 
 
 import jakarta.persistence.*;

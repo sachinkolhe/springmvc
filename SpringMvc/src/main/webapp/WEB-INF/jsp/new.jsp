@@ -6,11 +6,15 @@
 <body>
 <h2>Add New Product</h2>
 <form action="/products" method="post">
+	
     <label>Name:</label><br>
     <input type="text" name="name"/><br>
     <label>Price:</label><br>
     <input type="text" name="price"/><br>
+	
     <button type="submit">Save</button>
-</form>
+
+	</form>
+
 </body>
 </html>

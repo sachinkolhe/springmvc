@@ -11,6 +11,8 @@ import org.springframework.web.servlet.config.annotation.*;
 @Configuration
 @EnableWebMvc
 public class WebMvcConfig implements WebMvcConfigurer {
+	
+	
   @Bean
   public ViewResolver viewResolver() {
     final InternalResourceViewResolver bean = new InternalResourceViewResolver();
@@ -19,8 +21,19 @@ public class WebMvcConfig implements WebMvcConfigurer {
     bean.setSuffix(".jsp");
     return bean;
   }
+  /***
+   * "list"
+   * prefix : /WEB-INF/jsp/
+   * suffix : .jsp
+   * 
+   * WEB-INF/jsp/list.jsp
+   * 
+   * 
+   * */
+  
   @Override
   public void configureViewResolvers(ViewResolverRegistry registry) {
     registry.viewResolver(viewResolver());
   }
+  
 }
