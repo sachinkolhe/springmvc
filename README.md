@@ -221,3 +221,105 @@ Certainly! In Spring AOP, aspects are classes that contain advice (the code that
 
 These annotations provide a powerful way to implement cross-cutting concerns in a clean and modular fashion. You can mix and match these advices to suit your needs, creating flexible and reusable aspects in your Spring applications. If you have further questions or need examples of specific annotations, feel free to ask!
 
+
+
+-------------------------
+
+Certainly! A Spring Boot interceptor is a powerful tool that allows you to intercept HTTP requests and responses. You can use it for various purposes, such as logging, authentication, or modifying requests and responses.
+
+Here's a simple example of how to create and register an interceptor in a Spring Boot application.
+
+### Step 1: Create the Interceptor
+
+Create a class that implements the `HandlerInterceptor` interface. This interface provides methods for intercepting requests before and after they reach the controller.
+
+```java
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@Component
+public class MyInterceptor implements HandlerInterceptor {
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // Code to execute before the request is processed
+        System.out.println("Pre Handle method is Calling");
+        return true; // Return true to continue the request processing
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        // Code to execute after the request is processed
+        System.out.println("Post Handle method is Calling");
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        // Code to execute after the complete request is finished
+        System.out.println("Request and Response is completed");
+    }
+}
+```
+
+### Step 2: Register the Interceptor
+
+Next, you need to register the interceptor in your Spring Boot application. You can do this by creating a configuration class that implements `WebMvcConfigurer`.
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+
+    @Autowired
+    private MyInterceptor myInterceptor;
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(myInterceptor)
+                .addPathPatterns("/**"); // Intercept all requests; you can customize this
+    }
+}
+```
+
+### Step 3: Create a Sample Controller
+
+You can now create a simple controller to test the interceptor.
+
+```java
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class MyController {
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello, World!";
+    }
+}
+```
+
+### Step 4: Run the Application
+
+Now, when you run your Spring Boot application and access the `/hello` endpoint, you should see the interceptor's log statements in the console:
+
+```
+Pre Handle method is Calling
+Post Handle method is Calling
+Request and Response is completed
+```
+
+### Additional Notes
+
+- You can customize the paths to intercept in the `addPathPatterns` method. For example, you can specify `"/api/**"` to intercept only API requests.
+- You can also add exclusions with the `excludePathPatterns` method.
+- For more complex scenarios, you can access the request and response objects in the interceptor methods to perform additional logic.
+
+This is a basic example, but it should give you a good starting point for using interceptors in Spring Boot!
+
