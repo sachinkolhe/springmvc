@@ -65,7 +65,7 @@ public class ProductController {
         model.addAttribute("product", product);
         
         //Step 3: returna view "edit"
-        return "edit123"; // WEB-INF/jsp/<edit123>.jsp
+        return "edit"; // WEB-INF/jsp/<edit>.jsp
     }
 
     @PostMapping("/edit/{id}")
