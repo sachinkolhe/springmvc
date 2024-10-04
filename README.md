@@ -121,3 +121,103 @@ Consider a web application where users can register and log in. Using AOP, you c
 1. **Logging Aspect**: Automatically log user registrations and logins.
 2. **Security Aspect**: Check if users are authenticated before accessing certain features.
 
+Certainly! In Spring AOP, aspects are classes that contain advice (the code that is executed at a join point) and pointcut expressions (which specify where advice should be applied). Here are some important annotations related to aspects in Spring AOP:
+
+### 1. `@Aspect`
+- **Description**: This annotation indicates that a class is an aspect.
+- **Usage**: It is used to define an aspect in your application.
+- **Example**:
+  ```java
+  @Aspect
+  @Component
+  public class LoggingAspect {
+      // advice and pointcut definitions go here
+  }
+  ```
+
+### 2. `@Before`
+- **Description**: This advice runs before the method execution.
+- **Usage**: It is often used for logging or authentication checks.
+- **Example**:
+  ```java
+  @Before("execution(* com.newgen.main.service.*.*(..))")
+  public void logBefore(JoinPoint joinPoint) {
+      System.out.println("Before executing: " + joinPoint.getSignature().getName());
+  }
+  ```
+
+### 3. `@After`
+- **Description**: This advice runs after the method execution, regardless of whether it completed successfully or threw an exception.
+- **Usage**: It is typically used for cleanup or logging.
+- **Example**:
+  ```java
+  @After("execution(* com.newgen.main.service.*.*(..))")
+  public void logAfter(JoinPoint joinPoint) {
+      System.out.println("After executing: " + joinPoint.getSignature().getName());
+  }
+  ```
+
+### 4. `@AfterReturning`
+- **Description**: This advice runs after a method returns successfully.
+- **Usage**: It can be used to log the return value or modify it.
+- **Example**:
+  ```java
+  @AfterReturning(pointcut = "execution(* com.newgen.main.service.*.*(..))", returning = "result")
+  public void logAfterReturning(JoinPoint joinPoint, Object result) {
+      System.out.println("Method returned: " + result);
+  }
+  ```
+
+### 5. `@AfterThrowing`
+- **Description**: This advice runs if a method throws an exception.
+- **Usage**: It is useful for logging exceptions or handling errors.
+- **Example**:
+  ```java
+  @AfterThrowing(pointcut = "execution(* com.newgen.main.service.*.*(..))", throwing = "error")
+  public void logAfterThrowing(JoinPoint joinPoint, Throwable error) {
+      System.err.println("Method " + joinPoint.getSignature().getName() + " threw an exception: " + error);
+  }
+  ```
+
+### 6. `@Pointcut`
+- **Description**: This annotation is used to define a reusable pointcut expression.
+- **Usage**: It helps avoid duplication of pointcut expressions and improves readability.
+- **Example**:
+  ```java
+  @Pointcut("execution(* com.newgen.main.service.*.*(..))")
+  public void serviceLayerExecution() {}
+
+  @Before("serviceLayerExecution()")
+  public void logBefore(JoinPoint joinPoint) {
+      System.out.println("Before executing: " + joinPoint.getSignature().getName());
+  }
+  ```
+
+### 7. `@Around`
+- **Description**: This advice wraps the method execution. It allows you to run code both before and after the method execution and can control whether the method proceeds or not.
+- **Usage**: It's useful for logging, performance measurement, and transactional management.
+- **Example**:
+  ```java
+  @Around("execution(* com.newgen.main.service.*.*(..))")
+  public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
+      System.out.println("Before executing: " + joinPoint.getSignature().getName());
+      Object result = joinPoint.proceed(); // Proceed to the method execution
+      System.out.println("After executing: " + joinPoint.getSignature().getName());
+      return result;
+  }
+  ```
+
+### Summary of Annotations
+
+- **@Aspect**: Declares a class as an aspect.
+- **@Before**: Executes code before a method.
+- **@After**: Executes code after a method.
+- **@AfterReturning**: Executes code after a method returns successfully.
+- **@AfterThrowing**: Executes code when a method throws an exception.
+- **@Pointcut**: Defines a reusable pointcut expression.
+- **@Around**: Wraps method execution, allowing for pre- and post-execution logic.
+
+### Conclusion
+
+These annotations provide a powerful way to implement cross-cutting concerns in a clean and modular fashion. You can mix and match these advices to suit your needs, creating flexible and reusable aspects in your Spring applications. If you have further questions or need examples of specific annotations, feel free to ask!
+
